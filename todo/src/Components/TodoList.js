@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { addNewTask, toggleTask } from '../Actions';
+import { addNewTask, toggleTask, deleteCompletedTasks, deleteTask} from '../Actions';
 
 class TodoList extends React.Component {
   state = {
@@ -23,17 +23,29 @@ class TodoList extends React.Component {
     this.props.toggleTask(index);
   };
 
+  deleteCompletedTasks = (e, todoStatus) => {
+    e.preventDefault();
+    this.props.deleteCompletedTasks(todoStatus)
+  }
+
+  deleteTask = (e, task) => {
+    e.preventDefault();
+    this.props.deleteTask(task)
+  }
+
   render() {
     return (
       <div>
         <div className="todo-list">
           {this.props.tasks.map((task, index) => (
-            <h4 
-            onClick={e => this.toggleTask(e, index)} key={index}
-            >
-              {task.name}
-              {task.todoStatus && <i className="completed" />}
-            </h4>
+            <div className={`${task.todoStatus ? 'completed' : ''}`}>
+              <h4 
+              onClick={e => this.toggleTask(e, index)} key={index}
+              >
+                {task.name}
+              </h4>
+              <button onClick={e => this.deleteTask(e, task)}>X</button>
+            </div>
           ))}
         </div>
         <input
@@ -43,7 +55,7 @@ class TodoList extends React.Component {
           placeholder="Add new Task"
         />
         <button onClick={this.addTask}>Add Task</button>
-        {/* <button onClick={this.deleteTask}>Delete Task</button> */}
+        <button onClick={this.deleteCompletedTasks}>Delete Completed Tasks</button>
       </div>
     );
   }
@@ -58,5 +70,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { addNewTask, toggleTask }
+  { addNewTask, toggleTask, deleteCompletedTasks, deleteTask }
 )(TodoList);

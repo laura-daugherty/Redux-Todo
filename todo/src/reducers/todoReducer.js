@@ -1,4 +1,4 @@
-import { ADD_NEW_TASK, TOGGLE_TASK } from '../Actions/index';
+import { ADD_NEW_TASK, TOGGLE_TASK, DELETE_COMPLETED_TASK, DELETE_TASK } from '../Actions/index';
 
 const initialState = {
   tasks: [
@@ -31,6 +31,21 @@ export const todoReducer = (state = initialState, action) => {
           }
         })
       };
+      case DELETE_COMPLETED_TASK:
+        return {
+          ...state,
+          tasks: state.tasks.filter(task => 
+            task.todoStatus === false
+          )
+        }
+      case DELETE_TASK:
+        return {
+          ...state,
+          tasks: state.tasks.filter(task => 
+            task !== action.payload
+          )
+        }
+        
     default:
       return state;
   }

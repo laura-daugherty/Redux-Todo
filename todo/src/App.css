@@ -3,6 +3,6 @@
 }
 
 .completed {
-  border: 2px solid red
-  
+  text-decoration: line-through
+
 }
